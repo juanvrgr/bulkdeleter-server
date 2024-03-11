@@ -142,4 +142,30 @@ router.put('/user/:userId/google', async (req, res) => {
     }
 });
 
+router.put('/user/:userId/billing', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { planId } = req.body;
+
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const billingPlan = await BillingPlan.findByPk(planId);
+        if (!billingPlan) {
+            return res.status(404).json({ message: 'Billing plan not found' });
+        }
+
+        user.billingPlanId = planId;
+        user.planStartDate = new Date();
+        await user.save();
+
+        res.status(200).json({ message: 'Billing plan updated successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 module.exports = router;
