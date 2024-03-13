@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const User = require('../models').User;
 const BillingPlan = require('../models').BillingPlan;
+require('dotenv').config()
 
 const router = express.Router();
 
